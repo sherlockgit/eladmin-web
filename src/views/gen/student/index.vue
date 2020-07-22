@@ -36,7 +36,13 @@
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name" label="姓名" />
-        <el-table-column prop="age" label="年龄" />
+        <el-table-column prop="age" label="年龄" >
+           <!--  <template scope="scope">
+              <span v-if="scope.row.age===1" style="color: green">审核通过</span>
+              <span v-else-if="scope.row.isPass===50">待审核</span>
+              <span v-else style="color: red">未通过</span>
+            </template> -->
+        </el-table-column>
         <el-table-column prop="phone" label="手机号码" />
         <el-table-column v-permission="['admin','student:edit','student:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
@@ -98,6 +104,16 @@ export default {
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
       return true
+    },
+    cellStyle(row,column,rowIndex,columnIndex) {//根据报警级别显示颜色
+      console.log(row);
+      console.log(row.column);
+      console.log(1);
+      if (row.column.label==="年龄" && row.row.age=== 1) {
+        return 'color:red'
+      } else if (row.column.label==="年龄" && row.row.age=== 50 ) {
+        return 'color:yellow'
+      }
     }
   }
 }
